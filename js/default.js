@@ -202,7 +202,7 @@
                 // Check for a touch or click
                 stage.onClick = function () {
                     // Clear the scores if any exist
-                    score.text = 0;
+                    score = 0;
                    // cpuScore.text = 0;
                     display('clear'); // This will clear all the overlays
                     reset();
