@@ -23,9 +23,9 @@
     var currentGameState; // Keeps track of our current game state
 
     // Graphics //
-    var backgroundImage, backgroundBitmap; //The background graphic
-    var snakeBodyImage, snakeBodyBitmap; //The player paddle graphic
-    
+    var backgroundImage, backgroundBitmap; 
+    var snakeBodyImage, snakeBodyBitmap; 
+    var foodImage, foodBitmap;
     var winImage, winBitmap; //The winning popup
     var loseImage, loseBitmap; //The losing popup
     var pausedImage, pausedBitmap; //The Image we show when paused
@@ -42,7 +42,7 @@
     var snakeArray;
 
     var previousClick;
-    
+   
 
     //Calculate display scale factor
     var SCALE_X = 4;
@@ -95,6 +95,7 @@
                             { src: "Assets/win.png", id: "win" },
                             { src: "Assets/lose.png", id: "lose" },
                             { src: "Assets/grass.jpg", id: "bg" },
+                            { src: "Assets/snakeFood.png", id: "food" },
                             //Sounds
                             { src: "Assets/playerScore.mp3", id: "playerScore" },
                             { src: "Assets/enemyScore.mp3", id: "enemyScore" },
@@ -135,33 +136,26 @@
         pausedBitmap.scaleX = SCALE_X;
         pausedBitmap.scaleY = SCALE_Y;
 
-        // Draw the background first other items appear on top
         snakeBodyImage = preload.getResult("snakeBody");
-        snakeBodyBitmap = new createjs.Bitmap(snakeBodyImage);
-        //snakeBodyBitmap.scaleX = SCALE_X;
-        //snakeBodyBitmap.scaleY = SCALE_Y;
-        //stage.addChild(snakeBodyBitmap); // Add Background to the Stage
-
-
-        //Snake Body Image
+        //snakeBodyBitmap = new createjs.Bitmap(snakeBodyImage);
+        
         backgroundImage = preload.getResult("bg");
         backgroundBitmap = new createjs.Bitmap(backgroundImage);
-        stage.addChild(backgroundBitmap); // Add Background to the Stage
-        
-        
+        stage.addChild(backgroundBitmap);
+
+        foodImage = preload.getResult("food");
+        //foodBitmap = new createjs.Bitmap(foodImage);
+       
         cellWidth = snakeBodyImage.width;
         direction = "right"; //default direction
         createSnake();
         createFood();
-
-       
-
         startGame(); // Run our startGame function
     }
     
 
     function startGame() {
-        createjs.Ticker.setFPS(60); // Set the tick rate of our update timer
+        createjs.Ticker.setFPS(25); // Set the tick rate of our update timer
         createjs.Ticker.addListener(gameLoop); // Add a listener to call our gameloop on every tick
     }
 
@@ -221,52 +215,41 @@
     // Our draw function
     function draw() {
         
-        /*
-        // Draw the background first other items appear on top
-        backgroundImage = preload.getResult("bg");
-        backgroundBitmap = new createjs.Bitmap(backgroundImage);
-        backgroundBitmap.scaleX = SCALE_X;
-        backgroundBitmap.scaleY = SCALE_Y;
-        stage.addChild(backgroundBitmap); // Add Background to the Stage
-        stage.update();
-        */
-
-        //To avoid the snake trail we need to paint the BG on every frame
-        //Lets paint the canvas now
-        //ctx.fillStyle = "white";
         ctx.fillStyle = ctx.createPattern(backgroundImage, "repeat");
         ctx.fillRect(0, 0, canvas.width, canvas.height);
         ctx.strokeStyle = "black";
         ctx.strokeRect(0, 0, canvas.width, canvas.height);
 
-        
-
         stage.update();
 
 
-        //Lets paint the score
+        //the score
         var score_text = "Score: " + score;
         ctx.font = 'Italic 60px Sans-Serif';
         ctx.fillStyle = "white";
         ctx.fillText(score_text, 80, 140);
 
-        //Lets paint the score
+        //the title
         var titleText = "Hungry Snake";
         ctx.font = 'Bold 80px Sans-Serif';
         ctx.fillStyle = "white";
         ctx.fillText(titleText, 80, 80);
 
+        if (currentGameState == gameStates.Start) {
+            //Instructions
+            var newtext = "Click or Tap in the direction you want the snake to move";
+            ctx.font = 'Bold 80px Sans-Serif';
+            ctx.fillStyle = "white";
+            ctx.fillText(newtext, canvas.width / 4, canvas.height / 2, 1000);
+        }
+
 
         for (var i = 0; i < snakeArray.length; i++) {
             var c = snakeArray[i];
-            //Lets paint 10px wide cells
-            paintCell(c.x, c.y);
+            drawCell(c.x, c.y);
         }
 
-        //Lets paint the food
-        paintCell(food.x, food.y);
-        
-
+        drawFood(food.x, food.y);
         
     }
 
@@ -274,51 +257,36 @@
     // The gameplay logic, moved to its own function to make it easier to read
     function playGame() {
 
-        stage.onClick = moveSnake;
-        
+        stage.onClick = moveSnake;        
 
-        //The movement code for the snake to come here.
-        //The logic is simple
-        //Pop out the tail cell and place it infront of the head cell
         var nx = snakeArray[0].x;
         var ny = snakeArray[0].y;
-        //These were the position of the head cell.
-        //We will increment it to get the new head position
-        //Lets add proper direction based movement now
+
+
         if(direction == "right") nx++;
         else if (direction == "left") nx--;
         else if (direction == "up") ny--;
         else if (direction == "down") ny++;
+        
 
-        //Lets add the game over clauses now
-        //This will restart the game if the snake hits the wall
-        //Lets add the code for body collision
-        //Now if the head of the snake bumps into its body, the game will restart
+        
         if (nx == -1 || nx == canvas.width / cellWidth || ny == -1 || ny == canvas.height / cellWidth || checkCollision(nx, ny, snakeArray)) {
             //game over
             display("lose");
             currentGameState = gameStates.GameOver;
-            //Lets organize the code a bit now.
             return;
         }
 
-        //Lets write the code to make the snake eat the food
-        //The logic is simple
-        //If the new head position matches with that of the food,
-        //Create a new head instead of moving the tail
         if (nx == food.x && ny == food.y) {
             var tail = { x: nx, y: ny };
             score++;
-            //Create new food
             createFood();
         }
         else {
-            var tail = snakeArray.pop(); //pops out the last cell
+            var tail = snakeArray.pop(); 
             tail.x = nx; tail.y = ny;
         }
-        //The snake can now eat the food.
-
-        snakeArray.unshift(tail); //puts back the tail as the first cell
+        snakeArray.unshift(tail); 
 
         
 
@@ -397,10 +365,9 @@
 
     
     function createSnake() {
-        var length = 5; //Length of the snake
-        snakeArray = []; //Empty array to start with
+        var length = 5; 
+        snakeArray = []; 
         for (var i = length - 1; i >= 0; i--) {
-            //This will create a horizontal snake starting from the top left
             snakeArray.push({ x: i, y: 0 })
         }
     }
@@ -412,20 +379,22 @@
         };
     }
 
-    //Lets first create a generic function to paint cells
-    function paintCell(x, y) {
-       // ctx.fillStyle = "blue";
-        //ctx.rect(x * cellWidth, y * cellWidth, cellWidth, cellWidth);
-        //ctx.drawImage("snakeBody", 0, 0, 10, 10);
+    
+    function drawCell(x, y) {
         ctx.fillStyle = ctx.createPattern(snakeBodyImage, 'repeat')
         ctx.fillRect(x * cellWidth, y * cellWidth, cellWidth, cellWidth);
         ctx.strokeStyle = "white";
         ctx.strokeRect(x * cellWidth, y * cellWidth, cellWidth, cellWidth);
     }
 
+    function drawFood(x, y) {
+        ctx.fillStyle = ctx.createPattern(foodImage, 'repeat')
+        ctx.fillRect(x * cellWidth, y * cellWidth, cellWidth, cellWidth);
+        ctx.strokeStyle = "white";
+        ctx.strokeRect(x * cellWidth, y * cellWidth, cellWidth, cellWidth);
+    }
+
     function checkCollision(x, y, array) {
-        //This function will check if the provided x/y coordinates exist
-        //in an array of cells or not
         for (var i = 0; i < array.length; i++) {
             if (array[i].x == x && array[i].y == y)
                 return true;

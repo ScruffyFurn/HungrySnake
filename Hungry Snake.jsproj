@@ -59,6 +59,7 @@
     <Content Include="Assets\lose.png" />
     <Content Include="Assets\pause.png" />
     <Content Include="Assets\snakeBody.png" />
+    <Content Include="Assets\snakeFood.png" />
     <Content Include="Assets\snakeHead.png" />
     <Content Include="Assets\snakeTail.png" />
     <Content Include="Assets\win.png" />
