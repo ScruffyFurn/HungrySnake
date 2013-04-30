@@ -94,7 +94,7 @@
                             { src: "Assets/snakeBody.png", id: "snakeBody" },
                             { src: "Assets/win.png", id: "win" },
                             { src: "Assets/lose.png", id: "lose" },
-                            { src: "Assets/grass.jpg", id: "bg" },
+                            { src: "Assets/grass.png", id: "bg" },
                             { src: "Assets/snakeFood.png", id: "food" },
                             //Sounds
                             { src: "Assets/playerScore.mp3", id: "playerScore" },
@@ -141,6 +141,8 @@
         
         backgroundImage = preload.getResult("bg");
         backgroundBitmap = new createjs.Bitmap(backgroundImage);
+        backgroundBitmap.scaleX = 2;
+        backgroundBitmap.scaleY = 2;
         stage.addChild(backgroundBitmap);
 
         foodImage = preload.getResult("food");
@@ -155,7 +157,7 @@
     
 
     function startGame() {
-        createjs.Ticker.setFPS(25); // Set the tick rate of our update timer
+        createjs.Ticker.setFPS(15); // Set the tick rate of our update timer
         createjs.Ticker.addListener(gameLoop); // Add a listener to call our gameloop on every tick
     }
 
@@ -214,14 +216,8 @@
 
     // Our draw function
     function draw() {
-        
-        ctx.fillStyle = ctx.createPattern(backgroundImage, "repeat");
-        ctx.fillRect(0, 0, canvas.width, canvas.height);
-        ctx.strokeStyle = "black";
-        ctx.strokeRect(0, 0, canvas.width, canvas.height);
-
+    
         stage.update();
-
 
         //the score
         var score_text = "Score: " + score;

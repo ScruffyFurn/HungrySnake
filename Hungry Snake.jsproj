@@ -47,7 +47,10 @@
     <TargetPlatformIdentifier>Windows</TargetPlatformIdentifier>
     <TargetPlatformVersion>8.0</TargetPlatformVersion>
     <DefaultLanguage>en-US</DefaultLanguage>
-    <PackageCertificateKeyFile>HTML5_Template_TemporaryKey.pfx</PackageCertificateKeyFile>
+    <PackageCertificateKeyFile>Hungry Snake_StoreKey.pfx</PackageCertificateKeyFile>
+    <AppxAutoIncrementPackageRevision>True</AppxAutoIncrementPackageRevision>
+    <AppxPackageDir>C:\Users\Michael\Desktop\Microsoft\</AppxPackageDir>
+    <PackageCertificateThumbprint>3B6EC8331A8C7F2D6ACD37221A06C9BAF536F904</PackageCertificateThumbprint>
   </PropertyGroup>
   <ItemGroup>
     <AppxManifest Include="package.appxmanifest">
@@ -55,13 +58,11 @@
     </AppxManifest>
     <Content Include="Assets\deathSound.mp3" />
     <Content Include="Assets\eatSound.mp3" />
-    <Content Include="Assets\grass.jpg" />
+    <Content Include="Assets\grass.png" />
     <Content Include="Assets\lose.png" />
     <Content Include="Assets\pause.png" />
     <Content Include="Assets\snakeBody.png" />
     <Content Include="Assets\snakeFood.png" />
-    <Content Include="Assets\snakeHead.png" />
-    <Content Include="Assets\snakeTail.png" />
     <Content Include="Assets\win.png" />
     <Content Include="CreateJS\easeljs-0.5.0.min.js" />
     <Content Include="CreateJS\movieclip-0.5.0.min.js" />
@@ -70,12 +71,15 @@
     <Content Include="CreateJS\soundjs.flashplugin-0.3.0.min.js" />
     <Content Include="CreateJS\tweenjs-0.3.0.min.js" />
     <Content Include="default.html" />
+    <None Include="Hungry Snake_TemporaryKey.pfx" />
+    <None Include="Hungry Snake_StoreKey.pfx" />
     <Content Include="images\logo.png" />
     <Content Include="images\smalllogo.png" />
     <Content Include="images\splashscreen.png" />
     <Content Include="images\storelogo.png" />
     <Content Include="js\default.js" />
     <Content Include="css\default.css" />
+    <None Include="Package.StoreAssociation.xml" />
   </ItemGroup>
   <ItemGroup>
     <SDKReference Include="Microsoft.WinJS.1.0, Version=1.0" />
