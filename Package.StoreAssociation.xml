@@ -348,5 +348,10 @@
     <MainPackageIdentityName>24335IrishMickey.Pong</MainPackageIdentityName>
     <MainPackageIdentityName>24335IrishMickey.SuperPaddleBall</MainPackageIdentityName>
   </AccountPackageIdentityNames>
-  <PackageInfoList LandingUrl="https://appdev.microsoft.com:443/StorePortals/Developer/Catalog/ReleaseAnchor/0d08a066-2154-433e-8303-af31f8b286bb" />
+  <PackageInfoList LandingUrl="https://appdev.microsoft.com:443/StorePortals/Developer/Catalog/ReleaseAnchor/0d08a066-2154-433e-8303-af31f8b286bb">
+    <PackageInfo>
+      <PackageArchitecture>neutral</PackageArchitecture>
+      <PackageMaxArchitectureVersion>1.0.0.1</PackageMaxArchitectureVersion>
+    </PackageInfo>
+  </PackageInfoList>
 </StoreAssociation>

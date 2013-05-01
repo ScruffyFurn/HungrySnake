@@ -42,6 +42,7 @@
     var snakeArray;
 
     var previousClick;
+    var pauseNeeded = false;
    
 
     //Calculate display scale factor
@@ -133,8 +134,8 @@
 
         pausedImage = preload.getResult("paused");
         pausedBitmap = new createjs.Bitmap(pausedImage);
-        pausedBitmap.scaleX = SCALE_X;
-        pausedBitmap.scaleY = SCALE_Y;
+        pausedBitmap.scaleX = SCALE_X *2;
+        pausedBitmap.scaleY = SCALE_Y *2;
 
         snakeBodyImage = preload.getResult("snakeBody");
         //snakeBodyBitmap = new createjs.Bitmap(snakeBodyImage);
@@ -168,6 +169,7 @@
     }
 
 
+
     // The update, this is where our game logic lives
     function update() {
 
@@ -180,10 +182,10 @@
                 stage.onClick = null; //This nulls any click input
 
                 // Check for a touch or click
-                stage.onClick = function (e) {
-                    previousClick = e;
-                    direction = "right";
-                    currentGameState = gameStates.Playing; // Switch states to playing
+                 stage.onClick = function (e) {
+                        previousClick = e;
+                        direction = "right";
+                        currentGameState = gameStates.Playing; // Switch states to playing
                 }
                 break;
 
@@ -208,6 +210,14 @@
                 break;
             case gameStates.Paused:
                 display("paused"); //Display the paused overlay
+                stage.onClick = function (e) {
+                    if (pauseNeeded == false) {
+                        previousClick = e;
+                        currentGameState = gameStates.Playing; // Switch states to playing
+                    }
+                }
+                
+
                 break;
 
                 
@@ -344,8 +354,8 @@
                 break;
 
             case 'paused':
-                pausedBitmap.x = 0;
-                pausedBitmap.y = 0;
+                pausedBitmap.x = 60;
+                pausedBitmap.y = 500;
                 e = null;
                 stage.addChild(pausedBitmap);
                 break;
@@ -408,7 +418,12 @@
 
         if (newViewState === viewStates.snapped) {
             currentGameState = gameStates.Paused;
-        } 
+            pauseNeeded = true;
+        }
+        if (newViewState != viewStates.snapped) {
+            
+            pauseNeeded = false;
+        }
     }
 
     app.oncheckpoint = function (args) {

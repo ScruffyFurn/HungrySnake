@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Package xmlns="http://schemas.microsoft.com/appx/2010/manifest">
-  <Identity Name="24335IrishMickey.HungrySnake" Version="1.0.0.1" Publisher="CN=65744DF3-6AD7-4D2F-B922-CA754BE8685A" />
+  <Identity Name="24335IrishMickey.HungrySnake" Version="1.0.0.2" Publisher="CN=65744DF3-6AD7-4D2F-B922-CA754BE8685A" />
   <Properties>
     <DisplayName>Hungry Snake</DisplayName>
     <PublisherDisplayName>IrishMickey</PublisherDisplayName>
